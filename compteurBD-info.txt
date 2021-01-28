@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang=”fr”>
+  <head>
+    <meta charset="utf-8">
+    <title>titre</title>
+  </head> 
+  <body>
+   <?php
+     // Connexion à la base de données
+     include ("connectBD.php");
+
+     // Récupération du nombre de visites dans la base
+     $reponse = $bdd->query('SELECT ID FROM compteur');
+     $donnees = $reponse->fetch();
+     $count = $donnees['ID'] + 1;
+     echo "Cette page a été vue " . $count . " fois.";
+
+     $reponse->closeCursor();
+
+     // Mise à jour de la base de données
+     $req = $bdd->prepare('UPDATE compteur SET ID=:count');
+     $req->execute(array(
+       'count' => $count
+   ));
+   ?>
+  </body>
+</html>
